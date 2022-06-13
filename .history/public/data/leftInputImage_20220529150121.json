@@ -1,0 +1,23 @@
+[
+    {
+        "img_src": "IcRoundMoreHoriz"
+    },
+    {
+        "img_src": "IconoirFastArrowLeft",
+        "function": "previousPage"
+    },
+    {
+        "img_src": "IconoirNavArrowLeft",
+        "function": "previousPage"
+    },
+    {
+        "img_src": "IconoirNavArrowRight",
+        "function": "nextPage"
+    },
+    {
+        "img_src": "IconoirFastArrowRight"
+    },
+    {
+        "img_src": "IconoirDownload"
+    }
+]

@@ -1,0 +1,22 @@
+[
+    {
+        "name": "HTML",
+        "img_src": "LogosHtml5"
+    },
+    {
+        "name": "CSS",
+        "img_src": "LogosCss3"
+    },
+    {
+        "name": "JavaScript",
+        "img_src": "LogosJavascript"
+    },
+    {
+        "name": "Vue",
+        "img_src": "LogosVue"
+    },
+    {
+        "name": "Git & Version Control",
+        "img_src": "LogosGit"
+    }
+]

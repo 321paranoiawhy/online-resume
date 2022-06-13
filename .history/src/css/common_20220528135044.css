@@ -1,0 +1,9 @@
+textarea.left-textarea {
+    width: 210mm;
+    height: 297mm;
+}
+textarea.right-textarea {
+    /* 1 in = 25.4 mm = 96 px */
+    width: 210mm; /* 210 * 96 / 25.4 = 793.7 px */
+    height: 297mm; /* 297 * 96 / 25.4 = 1122.52 px */
+}

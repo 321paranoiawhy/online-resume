@@ -1,0 +1,70 @@
+<template>
+    <div class="sidebar-flex-column">
+        <img
+            v-for="(item, index) in sidebarImage"
+            :key="index"
+            :src="require('../assets/images/' + item.img_src + '.svg')"
+            :alt="item.img_src"
+            @click="Fn(item.function)"
+        />
+    </div>
+</template>
+
+<script>
+// 引入图片 json 数据文件
+import sidebarImage from "/public/data/sidebarImage.json";
+
+export default {
+    name: "Sidebar",
+    setup() {
+        let initialFontSizeNumber = 12;
+        // Fn: 根据入参执行相应函数
+        let Fn = (parameter) => {
+            switch (parameter) {
+                case "set":
+                    if (currentInputPage.value > 1) {
+                        currentInputPage.value--;
+                    }
+                    break;
+                case "undo":
+                    if (currentInputPage.value > 2) {
+                        currentInputPage.value -= 2;
+                    }
+                    break;
+                case "redo":
+                    if (currentInputPage.value < totalInputPage.value) {
+                        currentInputPage.value++;
+                    }
+                    break;
+                // 每次 --font-size-small +2px (12px -> 14px -> 16px...)
+                case "textIncrease":
+                    // console.log(`--font-size-small`);
+                    document.documentElement.style.setProperty(
+                        "--base",
+                        `${initialFontSizeNumber + 2}`
+                    );
+                    initialFontSizeNumber += 2;
+                    break;
+                case "textDecrease":
+                    break;
+                default:
+                    break;
+            }
+        };
+        return {
+            sidebarImage,
+            initialFontSizeNumber,
+            Fn,
+        };
+    },
+};
+</script>
+
+<style scoped lang="scss">
+.sidebar-flex-column {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+}
+</style>

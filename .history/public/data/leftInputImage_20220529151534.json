@@ -1,0 +1,26 @@
+[
+    {
+        "img_src": "IcRoundMoreHoriz",
+        "function": "more"
+    },
+    {
+        "img_src": "IconoirFastArrowLeft",
+        "function": "previousDoublePage()"
+    },
+    {
+        "img_src": "IconoirNavArrowLeft",
+        "function": "previousSinglePage()"
+    },
+    {
+        "img_src": "IconoirNavArrowRight",
+        "function": "nextSinglePage()"
+    },
+    {
+        "img_src": "IconoirFastArrowRight",
+        "function": "nextDoublePage()"
+    },
+    {
+        "img_src": "IconoirDownload",
+        "function": "download"
+    }
+]

@@ -1,0 +1,22 @@
+[
+    {
+        "img_src": "IconoirSettings",
+        "function": "set"
+    },
+    {
+        "img_src": "IconoirUndo",
+        "function": "undo"
+    },
+    {
+        "img_src": "IconoirRedo",
+        "function": "redo"
+    },
+    {
+        "img_src": "IcRoundTextIncrease",
+        "function": "textIncrease"
+    },
+    {
+        "img_src": "IcRoundTextDecrease",
+        "function": "textDecrease"
+    }
+]

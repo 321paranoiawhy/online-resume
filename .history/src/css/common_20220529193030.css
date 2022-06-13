@@ -1,0 +1,38 @@
+:root {
+    --A4-width: 210mm;
+    --A4-height: 297mm;
+    /* CSS 全局变量, 任何地方均可通过 var() 访问变量值 */
+    --base: 12;
+    --font-size-small: var(--base) px;
+    --line-height-small: calc(var(--font-size-small));
+    /* 深入解析 CSS P298 letter-spacing */
+    --letter-spacing: 0.05em;
+}
+textarea.left-textarea {
+    width: var(--A4-width); /* 210 * 96 / 25.4 = 793.7 px */
+    height: var(--A4-height); /* 297 * 96 / 25.4 = 1122.52 px */
+    /* 字体大小 */
+    font-size: var(--font-size-small);
+    /* 行高 */
+    line-height: var(--line-height-small);
+    /* 字符间距 */
+    letter-spacing: var(--letter-spacing);
+    /* 统一各浏览器下 textarea 盒模型 */
+    margin: 0;
+    border-width: 1px;
+    padding: 2px;
+}
+textarea.right-textarea {
+    /* 1 in = 25.4 mm = 96 px */
+    width: var(--A4-width); /* 210 * 96 / 25.4 = 793.7 px */
+    height: var(--A4-height); /* 297 * 96 / 25.4 = 1122.52 px */
+    /* 统一各浏览器下 textarea 盒模型 */
+    margin: 0;
+    border-width: 1px;
+    padding: 2px;
+}
+img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}

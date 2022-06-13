@@ -1,0 +1,8 @@
+textarea {
+    width: 40%;
+    height: 80%;
+}
+textarea.right-textarea {
+    width: 210mm;
+    height: 297mm;
+}

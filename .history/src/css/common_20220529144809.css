@@ -1,0 +1,26 @@
+textarea.left-textarea {
+    width: 210mm; /* 210 * 96 / 25.4 = 793.7 px */
+    height: 297mm; /* 297 * 96 / 25.4 = 1122.52 px */
+    /* 字体大小 */
+    font-size: --font-size-small;
+    /* 行高 */
+    line-height: 18px;
+    /* 统一各浏览器下 textarea 盒模型 */
+    margin: 0;
+    border-width: 1px;
+    padding: 2px;
+}
+textarea.right-textarea {
+    /* 1 in = 25.4 mm = 96 px */
+    width: 210mm; /* 210 * 96 / 25.4 = 793.7 px */
+    height: 297mm; /* 297 * 96 / 25.4 = 1122.52 px */
+    /* 统一各浏览器下 textarea 盒模型 */
+    margin: 0;
+    border-width: 1px;
+    padding: 2px;
+}
+img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}

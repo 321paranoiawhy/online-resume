@@ -1,0 +1,25 @@
+<template></template>
+
+<script>
+// @ is an alias to /src
+import Header from "@/components/Header.vue";
+import Introduction from "@/components/Introduction.vue";
+import LeftInput from "@/components/LeftInput.vue";
+import RightOutput from "@/components/RightOutput.vue";
+import Footer from "@/components/Footer.vue";
+
+// 功能拆解
+// 下载源码和渲染结果文件(HTML&CSS, PDF, DOCX), 使用 Pandoc
+// LaTeX 语法支持 (引入 MathJax)
+// JavaScript 实现 解析
+export default {
+    name: "HomeView",
+    components: {
+        Header,
+        Introduction,
+        LeftInput,
+        RightOutput,
+        Footer,
+    },
+};
+</script>

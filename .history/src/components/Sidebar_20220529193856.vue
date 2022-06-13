@@ -1,0 +1,84 @@
+<template>
+    <div class="sidebar-flex-column">
+        <img
+            v-for="(item, index) in sidebarImage"
+            :key="index"
+            :src="require('../assets/images/' + item.img_src + '.svg')"
+            :alt="item.img_src"
+            @click="Fn(item.function)"
+        />
+    </div>
+</template>
+
+<script>
+// 引入图片 json 数据文件
+import sidebarImage from "/public/data/sidebarImage.json";
+
+export default {
+    name: "Sidebar",
+    setup() {
+        let currentBase = 12;
+        // Fn: 根据入参执行相应函数
+        let Fn = (parameter) => {
+            switch (parameter) {
+                case "set":
+                    if (currentInputPage.value > 1) {
+                        currentInputPage.value--;
+                    }
+                    break;
+                case "undo":
+                    if (currentInputPage.value > 2) {
+                        currentInputPage.value -= 2;
+                    }
+                    break;
+                case "redo":
+                    if (currentInputPage.value < totalInputPage.value) {
+                        currentInputPage.value++;
+                    }
+                    break;
+                // 每次 --base +2 (12 -> 14 -> 16...)
+                case "textIncrease":
+                    // 最大值: 24 (2*12)
+                    if (currentBase === 24) {
+                        return;
+                    }
+                    document.documentElement.style.setProperty(
+                        "--base",
+                        `${currentBase + 2}`
+                    );
+                    // 更新 currentBase
+                    currentBase += 2;
+                    break;
+                case "textDecrease":
+                    // 最小值: 8
+                    if (currentBase === 8) {
+                        return;
+                    }
+                    document.documentElement.style.setProperty(
+                        "--base",
+                        `${currentBase - 2}`
+                    );
+                    // 更新 currentBase
+                    currentBase -= 2;
+                    break;
+                default:
+                    break;
+            }
+        };
+        return {
+            sidebarImage,
+            currentBase,
+            Fn,
+        };
+    },
+};
+</script>
+
+<style scoped lang="scss">
+.sidebar-flex-column {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+}
+</style>

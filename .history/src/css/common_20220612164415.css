@@ -1,0 +1,44 @@
+:root {
+    --A4-width: 210mm;
+    --A4-height: 297mm;
+    /* CSS 全局变量, 任何地方均可通过 var() 访问变量值 */
+    --base: 12;
+    /* 基于 --base 计算 --font-size-small 和 --line-height-small */
+    /* 参考链接: https://www.ruanyifeng.com/blog/2017/05/css-variables.html */
+    --font-size-small: calc(var(--base) * 1px);
+    --line-height-small: calc(var(--base) * 1.5px);
+    /* 字符间距 */
+    --letter-spacing: 0.05em;
+}
+textarea.left-textarea {
+    width: var(--A4-width); /* 210 * 96 / 25.4 = 793.7 px */
+    height: var(--A4-height); /* 297 * 96 / 25.4 = 1122.52 px */
+    /* min-height: var(--A4-height); /* 297 * 96 / 25.4 = 1122.52 px */
+    overflow-y: hidden;
+    /* 字体大小 */
+    font-size: var(--font-size-small);
+    /* 行高 */
+    line-height: var(--line-height-small);
+    /* 字符间距 */
+    letter-spacing: var(--letter-spacing);
+    /* 统一各浏览器下 textarea 盒模型 */
+    margin: 0;
+    border-width: 1px;
+    padding: 2px;
+}
+div.right-output {
+    /* 1 in = 25.4 mm = 96 px */
+    width: var(--A4-width); /* 210 * 96 / 25.4 = 793.7 px */
+    height: var(--A4-height); /* 297 * 96 / 25.4 = 1122.52 px */
+    margin: 0;
+    border: 1px solid red;
+    padding: 2px;
+    /* & .name {
+        border: 1px solid blue;
+    } */
+}
+img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
