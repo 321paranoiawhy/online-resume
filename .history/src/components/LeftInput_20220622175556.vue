@@ -1,0 +1,558 @@
+<template>
+    <div class="left-input-flex-column">
+        <div class="top-flex">
+            <div class="center">
+                <img
+                    v-for="(item, index) in leftInputImage.slice(0, 2)"
+                    :key="index"
+                    :src="require('../assets/images/' + item.img_src + '.svg')"
+                    :alt="item.img_src"
+                    @click="Fn(item.function)"
+                />
+                <!-- 当前页数 / 总页数 -->
+                <p>{{ currentInputPage }} / {{ totalInputPage }}</p>
+                <img
+                    v-for="(item, index) in leftInputImage.slice(2)"
+                    :key="index"
+                    :src="require('../assets/images/' + item.img_src + '.svg')"
+                    :alt="item.img_src"
+                    @click="Fn(item.function)"
+                />
+                <!-- v-if v-else -->
+                <!-- <img
+                    v-if="sunOrMoon"
+                    src="../assets/images/IconoirSunLight.svg"
+                    alt="IconoirSunLight"
+                    @click="changeTheme()"
+                />
+                <img
+                    v-else
+                    style="
+                        filter: invert(99%) sepia(1%) saturate(335%)
+                            hue-rotate(174deg) brightness(99%) contrast(95%);
+                    "
+                    src="../assets/images/IconoirHalfMoon.svg"
+                    alt="IconoirHalfMoon"
+                    @click="changeTheme()"
+                /> -->
+                <!-- v-show -->
+                <img
+                    v-show="sunOrMoon"
+                    src="../assets/images/IconoirSunLight.svg"
+                    alt="IconoirSunLight"
+                    @click="changeTheme()"
+                />
+                <img
+                    v-show="!sunOrMoon"
+                    src="../assets/images/IconoirHalfMoon.svg"
+                    alt="IconoirHalfMoon"
+                    @click="changeTheme()"
+                />
+            </div>
+            <!-- 快速跳转至某行某列 (默认当前页) -->
+            <p @click="gotoLnAndCol">Ln 1, Col 1</p>
+        </div>
+        <div class="flex">
+            <!-- 侧边工具栏 -->
+            <Sidebar></Sidebar>
+            <!-- ul li 左侧显示 行号 -->
+            <ul>
+                <li v-for="(item, index) in lineNumbersArray" :key="index">
+                    {{ item }}
+                </li>
+            </ul>
+            <!-- input textarea -->
+            <textarea
+                spellcheck="true"
+                class="left-textarea"
+                ref="input"
+                @input="compileInput()"
+            ></textarea>
+        </div>
+    </div>
+</template>
+
+<script>
+import leftInputImage from "/public/data/leftInputImage.json";
+import Sidebar from "@/components/Sidebar.vue";
+import { ref } from "@vue/reactivity";
+import { onMounted } from "@vue/runtime-core";
+import { useStore } from "vuex";
+
+export default {
+    name: "LeftInput",
+    components: {
+        Sidebar,
+    },
+    setup() {
+        let currentInputPage = ref(1);
+        let totalInputPage = ref(10);
+        let sunOrMoon = ref(true);
+        // 白天黑夜
+        let changeTheme = () => {
+            sunOrMoon.value = !sunOrMoon.value;
+            // sun 白天
+            if (sunOrMoon.value) {
+                // 设置 html backgroundColor color
+                document.querySelector("html").style.backgroundColor =
+                    "#f1f3f5";
+                document.querySelector("html").style.color = "#3f3f3f";
+                // 设置 textarea backgroundColor color
+                document.querySelector("textarea").style.backgroundColor =
+                    "#f1f3f5";
+                document.querySelector("textarea").style.color = "#3f3f3f";
+                document
+                    .querySelectorAll("img")
+                    .forEach(
+                        (item) =>
+                            (item.style.filter =
+                                "invert(22%) sepia(0%) saturate(0%) hue-rotate(109deg) brightness(97%) contrast(87%)")
+                    );
+            }
+            // moon 黑夜
+            else {
+                document.querySelector("html").style.backgroundColor =
+                    "#3f3f3f";
+                document.querySelector("html").style.color = "#f1f3f5";
+                document.querySelector("textarea").style.backgroundColor =
+                    "#3f3f3f";
+                document.querySelector("textarea").style.color = "#f1f3f5";
+                document
+                    .querySelectorAll("img")
+                    .forEach(
+                        (item) =>
+                            (item.style.filter =
+                                "invert(99%) sepia(1%) saturate(335%) hue-rotate(174deg) brightness(99%) contrast(95%)")
+                    );
+            }
+        };
+        let input = ref(null);
+        const store = useStore();
+        let initialInput =
+            "name: 文华义\nage: 26\nexperience: 1 year\nemail: paranoiawhy@gmail.com\nwechat: why511686\nphone: 17375774285\n\n\nbasic: HTML / CSS / JavaScript\nframework: Vue 2 / Vue 3\napi: audio / canvas / localStorage\ntool: Vue CLI / Vuex / Scss / Git / Markdown / Netlify\n\n\nundergraduate-school: 武汉科技大学\nundergraduate-time: 2014.09 ~ 2018.06\npostgraduate-school: 湖南大学 (985)\npostgraduate-time: 2018.09 ~ 2021.06\n\n\n*award: 湖北省大学生数学竞赛省一等奖 (Top 300) \n*award: 武汉科技大学高等数学竞赛一等奖一次，二等奖一次\n*award: 英语四级 489 分，英语六级 469 分\n\n\n*github: https://github.com/321paranoiawhy\n*blog: https://321paranoiawhy.github.io/\n\n\n*self-evaluation: 数学基础扎实，逻辑思维强，多次获得数学竞赛奖项\n*self-evaluation: 已独立、自主开发 4 个开源项目\n*self-evaluation: 喜好研究问题和解决问题\n*self-evaluation: 用 JavaScript 实现了一些典型的数据结构，如单向链表、双向链表等\n\n\n*project: 2048\n*summary: 复刻几年前风靡一时的游戏 - 2048\n*website: https://not-just-2048-vue.netlify.app/\n*features: 游戏可高度定制化；实时显示当前操作；提供回退、复原、计步和计分功能。\n\n\n*project: Fenav\n*summary: 前端导航网站\n*website: https://fenav.netlify.app/\n*features: 收集了众多实用网站并加以分门别类；左侧 TOC 跳转；\n\n\n*project: Just-jazz music player\n*summary: 一个简易的爵士音乐播放器\n*website: https://just-jazz.netlify.app/\n*features: Canvas 实现音频可视化；播放进度可实时调整；四种播放模式供切换和音乐下载功能。\n\n\n*project: Online-resume\n*summary: 像写 Markdown 一样写简历\n*website: https://vue-resume.netlify.app/\n*features: WYSIWY；输入输出实时同步；提供左侧输入栏文本下载和右侧输出栏 PDF 导出功能；";
+        // vue2 this.$refs.input 获取到 DOM 元素
+        // vue3 mounted 后方可获取到 DOM 元素
+        onMounted(() => {
+            // Fn 提交至 vuex
+            store.commit("getFn", Fn);
+            // if (localStorage.getItem("input")) {
+            //     // 如果 localStorage 中有已存储的 input 项, 则赋其值给 input.value.value
+            //     input.value.value = localStorage.getItem("input");
+            //     // 清除 localStorage 中的 input 项 (浏览器控制台中可直接使用)
+            //     // localStorage.removeItem("input");
+            // } else {
+            //     // 如果 localStorage 中没有已存储的 input 项, 则赋初值 initialInput 给 input.value.value
+            //     input.value.value = initialInput;
+            // }
+            input.value.value = initialInput;
+            // 重新更新 lineNumbersArray
+            lineNumbersArray.value = Array.from(
+                { length: input.value.value.split("\n").length },
+                (_, index) => index + 1
+            );
+            // 光标自动聚焦至输入框
+            input.value.focus();
+            // 执行 compileInput
+            compileInput();
+            // console.log(JSON.stringify(input.value.value));
+        });
+        // lineNumbersArray, 默认值为 [1]
+        let lineNumbersArray = ref([1]);
+
+        // 当左侧 input textarea 变化时, 执行 compileInput 函数
+        let compileInput = () => {
+            // 通过 ref 拿到 DOM: input.value
+            // 取出 DOM 中值: input.value.value
+            // console.log(input.value.value.split("\n"));
+            lineNumbersArray.value = Array.from(
+                { length: input.value.value.split("\n").length },
+                (_, index) => index + 1
+            );
+            // 利用换行符作为分隔, 将 input textarea 内容切割为字符串数组
+            let splitArray = input.value.value.split("\n");
+
+            let selfEvaluationText = splitArray.filter((item) =>
+                item.startsWith("*self-evaluation: ")
+            );
+            if (selfEvaluationText) {
+                // 清空后再逐个添加
+                document.querySelector("ul.selfEvaluation").innerHTML = "";
+                for (let i = 0; i < selfEvaluationText.length; i++) {
+                    let newElement = document.createElement("li");
+                    newElement.innerHTML = selfEvaluationText[i].slice(
+                        "*self-evaluation: ".length
+                    );
+                    document
+                        .querySelector("ul.selfEvaluation")
+                        .appendChild(newElement);
+                }
+            }
+
+            let awardText = splitArray.filter((item) =>
+                item.startsWith("*award: ")
+            );
+            if (awardText) {
+                // 清空后再逐个添加
+                document.querySelector("ul.award").innerHTML = "";
+                for (let i = 0; i < awardText.length; i++) {
+                    let newElement = document.createElement("li");
+                    newElement.innerHTML = awardText[i].slice(
+                        "*award: ".length
+                    );
+                    document.querySelector("ul.award").appendChild(newElement);
+                }
+            }
+
+            let projectText = splitArray.filter((item) =>
+                item.startsWith("*project: ")
+            );
+            if (projectText) {
+                document
+                    .querySelectorAll("h4.project")
+                    .forEach((item, index) =>
+                        projectText[index]
+                            ? (item.innerHTML = projectText[index].slice(
+                                  "*project: ".length
+                              ))
+                            : (item.innerHTML = null)
+                    );
+            }
+
+            let projectSummaryText = splitArray.filter((item) =>
+                item.startsWith("*summary: ")
+            );
+            if (projectSummaryText) {
+                document
+                    .querySelectorAll("p.summary")
+                    .forEach((item, index) =>
+                        projectSummaryText[index]
+                            ? (item.innerHTML = projectSummaryText[index].slice(
+                                  "*summary: ".length
+                              ))
+                            : (item.innerHTML = null)
+                    );
+            }
+
+            let projectWebsiteText = splitArray.filter((item) =>
+                item.startsWith("*website: ")
+            );
+            if (projectWebsiteText) {
+                document
+                    .querySelectorAll("a.website")
+                    .forEach((item, index) =>
+                        projectWebsiteText[index]
+                            ? ((item.innerHTML =
+                                  "Website: " +
+                                  projectWebsiteText[index].slice(
+                                      "*website: ".length
+                                  )),
+                              (item.href = projectWebsiteText[index].slice(
+                                  "*website: ".length
+                              )))
+                            : (item.innerHTML = null)
+                    );
+            }
+
+            let projectFeaturesText = splitArray.filter((item) =>
+                item.startsWith("*features: ")
+            );
+            if (projectFeaturesText) {
+                document
+                    .querySelectorAll("li.features")
+                    .forEach((item, index) =>
+                        projectFeaturesText[index]
+                            ? (item.innerHTML =
+                                  "Features: " +
+                                  projectFeaturesText[index].slice(
+                                      "*features: ".length
+                                  ))
+                            : (item.innerHTML = null)
+                    );
+            }
+
+            // console.log(input.value.value);
+            // console.log(JSON.stringify(input.value.value));
+            // console.log(encodeURI(input.value.value));
+            for (let i = 0; i < splitArray.length; i++) {
+                // 正则匹配 (不区分大小写)
+                let matchArray =
+                    splitArray[i].match(/name:\s/i) ||
+                    splitArray[i].match(/age:\s/i) ||
+                    splitArray[i].match(/experience:\s/i) ||
+                    splitArray[i].match(/email:\s/i) ||
+                    splitArray[i].match(/wechat:\s/i) ||
+                    splitArray[i].match(/phone:\s/i) ||
+                    splitArray[i].match(/basic:\s/i) ||
+                    splitArray[i].match(/framework:\s/i) ||
+                    splitArray[i].match(/api:\s/i) ||
+                    splitArray[i].match(/tool:\s/i) ||
+                    splitArray[i].match(/undergraduate-school:\s/i) ||
+                    splitArray[i].match(/undergraduate-time:\s/i) ||
+                    splitArray[i].match(/postgraduate-school:\s/i) ||
+                    splitArray[i].match(/postgraduate-time:\s/i) ||
+                    splitArray[i].match(/github:\s/i) ||
+                    splitArray[i].match(/blog:\s/i);
+                // console.log(matchArray);
+                // console.log(matchArray[0]);
+                if (matchArray) {
+                    // 加上相应的 class 类名, 便于 css 选择器选中并加以相应的样式
+                    // 不区分大小写, 兼容性更强
+                    switch (matchArray[0].toLowerCase()) {
+                        // 匹配到了 name:
+                        case "name: ":
+                            // console.log(document.querySelector("li.name"));
+                            document.querySelector(
+                                "li.name"
+                            ).innerHTML = `Name: ${splitArray[i].slice(
+                                "name: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 age:
+                        case "age: ":
+                            document.querySelector(
+                                "li.age"
+                            ).innerHTML = `Age: ${splitArray[i].slice(
+                                "age: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 experience:
+                        case "experience: ":
+                            document.querySelector(
+                                "li.experience"
+                            ).innerHTML = `Experience: ${splitArray[i].slice(
+                                "experience: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 email:
+                        case "email: ":
+                            document.querySelector(
+                                "li.email"
+                            ).innerHTML = `Email: ${splitArray[i].slice(
+                                "email: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 wechat:
+                        case "wechat: ":
+                            document.querySelector(
+                                "li.wechat"
+                            ).innerHTML = `Wechat: ${splitArray[i].slice(
+                                "wechat: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 phone:
+                        case "phone: ":
+                            document.querySelector(
+                                "li.phone"
+                            ).innerHTML = `Phone: ${splitArray[i].slice(
+                                "phone: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 basic:
+                        case "basic: ":
+                            document.querySelector(
+                                "li.basic"
+                            ).innerHTML = `Basic: ${splitArray[i].slice(
+                                "basic: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 framework:
+                        case "framework: ":
+                            document.querySelector(
+                                "li.framework"
+                            ).innerHTML = `Framework: ${splitArray[i].slice(
+                                "framework: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 api:
+                        case "api: ":
+                            document.querySelector(
+                                "li.api"
+                            ).innerHTML = `API: ${splitArray[i].slice(
+                                "api: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 tool:
+                        case "tool: ":
+                            document.querySelector(
+                                "li.tool"
+                            ).innerHTML = `Tool: ${splitArray[i].slice(
+                                "tool: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 undergraduate:
+                        case "undergraduate-school: ":
+                            document.querySelector(
+                                "p.undergraduate-school"
+                            ).innerHTML = `School: ${splitArray[i].slice(
+                                "undergraduate-school: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 undergraduate-time:
+                        case "undergraduate-time: ":
+                            document.querySelector(
+                                "p.undergraduate-time"
+                            ).innerHTML = `${splitArray[i].slice(
+                                "undergraduate-time: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 postgraduate:
+                        case "postgraduate-school: ":
+                            document.querySelector(
+                                "p.postgraduate-school"
+                            ).innerHTML = `School: ${splitArray[i].slice(
+                                "postgraduate-school: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 postgraduate-time:
+                        case "postgraduate-time: ":
+                            document.querySelector(
+                                "p.postgraduate-time"
+                            ).innerHTML = `${splitArray[i].slice(
+                                "postgraduate-time: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 github:
+                        case "github: ":
+                            document.querySelector(
+                                "a.github"
+                            ).innerHTML = `GitHub: ${splitArray[i].slice(
+                                "github: ".length
+                            )}`;
+                            document.querySelector(
+                                "a.github"
+                            ).href = `${splitArray[i].slice(
+                                "github: ".length
+                            )}`;
+                            break;
+                        // 匹配到了 blog:
+                        case "blog: ":
+                            document.querySelector(
+                                "a.blog"
+                            ).innerHTML = `Blog: ${splitArray[i].slice(
+                                "blog: ".length
+                            )}`;
+                            document.querySelector(
+                                "a.blog"
+                            ).href = `${splitArray[i].slice("blog: ".length)}`;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+            // TODO
+            // console.log(input.value.selectionStart);
+        };
+        // Fn: 根据入参执行相应函数
+        let Fn = (parameter) => {
+            switch (parameter) {
+                // 上一页
+                case "previousSinglePage":
+                    // currentInputPage 不大于 1, 不予处理
+                    // currentInputPage 大于 1, 则 --
+                    if (currentInputPage.value > 1) {
+                        currentInputPage.value--;
+                    }
+                    break;
+                // 前两页
+                case "previousDoublePage":
+                    // currentInputPage 不大于 2, 不予处理
+                    // currentInputPage 大于 2, 则 -=2
+                    if (currentInputPage.value > 2) {
+                        currentInputPage.value -= 2;
+                    }
+                    break;
+                // 下一页
+                case "nextSinglePage":
+                    // currentInputPage 不小于 totalInputPage, 不予处理
+                    // currentInputPage 小于 totalInputPage, 则 ++
+                    if (currentInputPage.value < totalInputPage.value) {
+                        currentInputPage.value++;
+                    }
+                    break;
+                // 后两页
+                case "nextDoublePage":
+                    // currentInputPage 不小于 totalInputPage - 1, 不予处理
+                    // currentInputPage 小于 totalInputPage - 1, 则 +=2
+                    if (currentInputPage.value < totalInputPage.value - 1) {
+                        currentInputPage.value += 2;
+                    }
+                    break;
+                case "save":
+                    // 保存到 localStorage
+                    localStorage.setItem("input", input.value.value);
+                    break;
+                case "upload":
+                    // TODO 上传文件
+                    break;
+                case "download":
+                    // 下载为 txt 文件
+                    let filename = "input.txt";
+                    let content = input.value.value;
+                    // 兼容处理
+                    let urlObject = window.URL || window.webkitURL || window;
+                    let blob = new Blob([content]);
+                    let a = document.createElement("a");
+                    a.download = filename;
+                    a.href = urlObject.createObjectURL(blob);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a); // 或 a.remove();
+                    break;
+                default:
+                    break;
+            }
+        };
+        let gotoLnAndCol = () => {};
+        return {
+            leftInputImage,
+            currentInputPage,
+            totalInputPage,
+            sunOrMoon,
+            changeTheme,
+            input,
+            initialInput,
+            lineNumbersArray,
+            compileInput,
+            Fn,
+            gotoLnAndCol,
+        };
+    },
+};
+</script>
+
+<style scoped lang="scss">
+.left-input-flex-column {
+    display: flex;
+    flex-direction: column;
+    & div.flex {
+        display: flex;
+    }
+    & ul li {
+        list-style-type: none;
+    }
+    & ul {
+        margin: 3px 10px 0 15px;
+        padding: 0;
+        // 字体大小
+        font-size: var(--font-size-small);
+        // 行高
+        line-height: var(--line-height-small);
+        font-family: monospace;
+    }
+    & div.top-flex {
+        display: flex;
+        width: 210mm;
+        margin-left: auto;
+        justify-content: center;
+        & div.center {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+}
+</style>
